@@ -26,7 +26,7 @@ The primarily use of this script is to create/update lists of
 coauthors that can be included in the [NSF Collaborators and Other
 Affiliations (COA) Information
 form](https://nsf.gov/bfa/dias/policy/coa.jsp). While the output of
-this script can in most cases be copied and pasted into the COA form
+this script can in most cases be copied and pasted directly into the COA form,
 it is advisable to manually verify each entries. You are ultimately
 responsible for the validity of the content of your submission to NSF.
 
