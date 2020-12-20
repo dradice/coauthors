@@ -45,3 +45,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+## Acknowledgements
+
+I adapted some code for the interface with iNSPIRE-HEP from
+[citations.py](https://github.com/efranzin/python/blob/master/citations.py).
