@@ -36,6 +36,8 @@ import urllib.request, json
 parser = argparse.ArgumentParser()
 parser.add_argument("-b", "--bai", dest="bai", required=True,
         help="author identification string (required)")
+parser.add_argument("--format", choices=["DOE", "NSF"], dest="format",
+        default="NSF", help="if specified the output")
 parser.add_argument("--since", dest="since", type=int, default=0,
         help="if specified lists coauthors since the given year")
 parser.add_argument("-o", "--output", dest="output",
@@ -58,6 +60,7 @@ for hit in data['hits']['hits']:
     if year < args.since:
         print("Skipping {} since year {} is less than {}".format(
             hit['metadata']['texkeys'][0], year, args.since))
+        continue
     for author in hit['metadata']['authors']:
         author_bai = author["bai"]
         author_name = author["full_name"]
@@ -73,14 +76,30 @@ for hit in data['hits']['hits']:
             else:
                 affiliation = "Unknown"
             entries[author_bai] = (author_name, affiliation, year)
-        # Prefer longer version of name
+        # Coauthor is known, but might be updated
         else:
+            # Update the last active year
+            if int(year) > int(entries[author_bai][2]):
+                author_name, affiliation, _ = entries[author_bai]
+                entries[author_bai] = (author_name, affiliation, year)
+            # Prefer longer version of name
             if len(author_name) > len(entries[author_bai][0]):
                 _, affiliation, year = entries[author_bai]
                 entries[author_bai] = (author_name, affiliation, year)
 
-writer = csv.DictWriter(outfile, ["Author", "Affiliation", "Last Active"])
-writer.writeheader()
-for author_bai, (author_name, affiliation, year) in entries.items():
-    row = {"Author": author_name, "Affiliation": affiliation, "Last Active": year}
-    writer.writerow(row)
+if args.format == "NSF":
+    writer = csv.DictWriter(outfile, ["Author", "Affiliation", "Last Active"])
+    writer.writeheader()
+    for author_bai, (author_name, affiliation, year) in entries.items():
+        row = {"Author": author_name, "Affiliation": affiliation, "Last Active": year}
+        writer.writerow(row)
+elif args.format == "DOE":
+    writer = csv.DictWriter(outfile, ["Last Name", "First Name", "Affiliation", "Last Active"])
+    writer.writeheader()
+    for author_bai, (author_name, affiliation, year) in entries.items():
+        last_name, first_name = author_name.split(", ")
+        row = {"Last Name": last_name, "First Name": first_name, "Affiliation":
+                affiliation, "Last Active": year}
+        writer.writerow(row)
+else:
+    sys.exit("Unknown output format: {}".format(args.format))
