@@ -6,11 +6,15 @@ Create a CSV list of all coauthors starting from a given year using
 data from the [iNSPIRE-HEP](https://inspirehep.net) database.
 
 ```
-usage: coauthors.py [-h] -b BAI [--since SINCE] [-o OUTPUT]
+usage: coauthors.py [-h] -b BAI [--format {DOE,NSF}] [--since SINCE] [-o OUTPUT] [keys ...]
+
+positional arguments:
+  keys                  only consider these keys
 
 optional arguments:
   -h, --help            show this help message and exit
   -b BAI, --bai BAI     author identification string (required)
+  --format {DOE,NSF}    if specified the output
   --since SINCE         if specified lists coauthors since the given year
   -o OUTPUT, --output OUTPUT
                         output file (if not specified outputs to stdout)

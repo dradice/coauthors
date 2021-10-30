@@ -23,7 +23,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 __author__  = 'David Radice'
-__version__ = '1.0'
+__version__ = '1.1'
 __license__ = 'GPL'
 __email__   = 'dur566@psu.edu'
 
@@ -36,6 +36,7 @@ import urllib.request, json
 parser = argparse.ArgumentParser()
 parser.add_argument("-b", "--bai", dest="bai", required=True,
         help="author identification string (required)")
+parser.add_argument("keys", nargs="*", help="only consider these keys")
 parser.add_argument("--format", choices=["DOE", "NSF"], dest="format",
         default="NSF", help="if specified the output")
 parser.add_argument("--since", dest="since", type=int, default=0,
@@ -57,8 +58,12 @@ entries = {}
 
 for hit in data['hits']['hits']:
     year = int(hit['metadata']['earliest_date'][0:4])
+    if len(args.keys) > 0 and len(set(hit['metadata']['texkeys']).intersection(args.keys)) == 0:
+        sys.stderr.write("Skipping {} since it is not among the key list\n".format(
+            hit['metadata']['texkeys'][0]))
+        continue
     if year < args.since:
-        print("Skipping {} since year {} is less than {}".format(
+        sys.stderr.write("Skipping {} since year {} is less than {}\n".format(
             hit['metadata']['texkeys'][0], year, args.since))
         continue
     for author in hit['metadata']['authors']:
