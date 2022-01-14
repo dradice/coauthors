@@ -26,7 +26,7 @@ The author identification string is the unique ID associated with you
 on [iNSPIRE-HEP](https://inspirehep.net). For example, mine is
 "D.Radice.1". I would recommended linking
 [iNSPIRE-HEP](https://inspirehep.net) and [ORCiD](https://orcid.org/)
-and synching all papers prior running the script.
+and synching all papers prior to running the script.
 
 The primarily use of this script is to create/update lists of
 coauthors that can be included in the [NSF Collaborators and Other
