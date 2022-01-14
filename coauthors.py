@@ -38,7 +38,7 @@ parser.add_argument("-b", "--bai", dest="bai", required=True,
         help="author identification string (required)")
 parser.add_argument("keys", nargs="*", help="only consider these keys")
 parser.add_argument("--format", choices=["DOE", "NSF"], dest="format",
-        default="NSF", help="if specified the output")
+        default="NSF", help="output format (defaults to NSF)")
 parser.add_argument("--since", dest="since", type=int, default=0,
         help="if specified lists coauthors since the given year")
 parser.add_argument("-o", "--output", dest="output",
