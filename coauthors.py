@@ -32,6 +32,13 @@ import csv
 import sys
 import urllib.request, json
 
+# Utility function to get the author BAI
+def get_bai(author):
+    for ids in author['ids']:
+        if ids["schema"] == "INSPIRE BAI":
+            return ids["value"]
+    raise ValueError("Could not get author ID for " + str(author))
+
 # Parse CLI
 parser = argparse.ArgumentParser()
 parser.add_argument("-b", "--bai", dest="bai", required=True,
@@ -67,7 +74,7 @@ for hit in data['hits']['hits']:
             hit['metadata']['texkeys'][0], year, args.since))
         continue
     for author in hit['metadata']['authors']:
-        author_bai = author["bai"]
+        author_bai = get_bai(author)
         author_name = author["full_name"]
         # Exclude yourself from coauthor lists
         if author_bai == args.bai:
